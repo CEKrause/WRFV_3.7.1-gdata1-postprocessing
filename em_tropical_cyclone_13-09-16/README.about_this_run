@@ -1,0 +1,17 @@
+Idealised tropical cyclone run using the em_tropical_cyclone compilation of WRF.
+
+Run by: Claire Krause
+Date: 12/9/2016
+Run namelist: namelist.input_IDEAL_Aus1
+Job submission script: run_ideal, run_wrf
+
+Uses the default tropical cyclone configuration from module_initialize_tropical_cyclone.F
+- Corilois term flipped for use in the SH
+
+N.B. wrfinput has the winds the wrong way after running ideal.exe
+-> Need to flip them for the SH using script "flip_winds.ncl" before
+   running WRF!
+
+Need to link in script "field_list_d01.txt". It is read in by ideal.exe
+
+Output to 61 pressure levels to match ERA-interim met files
