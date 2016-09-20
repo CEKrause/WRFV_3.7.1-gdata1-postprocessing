@@ -1,0 +1,27 @@
+Aus1 
+- Ned-like hybrid storm
+- 1989-04-10 to 1989-04-30
+- default TC storm parameters from module_initializ_tropical_cyclone.F
+	- coriolis term flipped for SH
+- Ideal storm data from /g/data1/w85/ett/em_tropical_cyclone_13-09-16
+- ERA-interim input from 1989-04-01-00
+
+Aus2
+- Same storm position as Aus4 (i = 200, j = 350)
+- Different met input conditions
+  - ERA-interim inpur from 1989-03-28-00
+- Ideal storm data from /g/data1/w85/ett/em_tropical_cyclone_13-09-16
+
+Aus4
+- Same as Aus1 but storm moved 50 cells west to avoid crossing coast
+  - storm centre at i = 200, j = 350.
+- ERA-interim input from 1989-04-01-00
+- Ideal storm data from /g/data1/w85/ett/em_tropical_cyclone_13-09-16
+
+Aus5
+-  Experimenting with different met input conditions
+   - ERA-interim input from 1989-03-26-00
+-  Storm centre moved further south to try to get it to transition
+   - i = 200, j = 300.
+- Ideal storm data from /g/data1/w85/ett/em_tropical_cyclone_13-09-16
+
