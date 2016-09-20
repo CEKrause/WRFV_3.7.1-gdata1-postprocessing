@@ -1,0 +1,40 @@
+#!/bin/ksh
+
+# This code generates the index files for use in the GFDL vortex tracker
+# inputs are the GRIB files produced by the UPP
+
+# Set up length of time loop
+export fhr=00
+export lastfhr=220
+export incrementhr=1
+export domain=d01
+
+
+# Begin loop
+while [ $((10#${fhr})) -le $((10#${lastfhr})) ] ; do
+
+fmin=$((10#${fhr}*60))
+
+# Formatted fhr for filenames
+fhr=`printf "%02i" ${fhr}`
+fmin=`printf "%05i" ${fmin}`
+
+# Link UPP output to new name
+ln -sf WRFPRS_${domain}.${fhr} hwrf.coupled.Nedhybrid.1989041000.f${fmin}
+
+# run grib index with the new file name
+echo 'working on WRFPRS_' ${domain} '.' ${fhr}
+./grbindex.exe WRFPRS_${domain}.${fhr} hwrf.coupled.Nedhybrid.1989041000.f${fmin}.ix
+
+# Check that it ran correctly
+err1=$?
+if test "$err1" -ne 0
+then
+echo 'GRBINDEX FAILED, EXITTING'
+exit
+fi
+
+# Increment the loop
+fhr=$((10#${fhr}+$((${incrementhr}))))
+
+done
