@@ -1,0 +1,38 @@
+TC Ned experiment run log
+
+Trying to recreate TC Ned, March/April 1989
+
+These runs were done prior to using the hybrid WRF model
+None of these runs produced a viable TC
+  - they all degraded within a couple of days (if they lasted that long)
+TCs were not bogussed - trying to see if they would evolve naturally
+  - they didn't...
+
+Note that these were run before discovering the need to run
+calc_ecmwf_p.exe with ERA-interim data
+  - One possible cause for all the seg faults experienced prior
+    to getting the run going
+
+Ned3
+- Run with only one domain (was still debugging)
+- Run from 1989-03-24-00 to 1989-04-02-00
+
+Ned4
+- Same run as Ned3 with with two domains
+  - domain two started on 1989-03-25-00
+
+Ned5
+- Same run as Ned3 but with three domains
+  - domain three started on 1989-03-26-00
+
+Ned6
+- Same as Ned5 but domains two and three both start on
+  1989-03-26-00
+
+
+Output files from all of these runs were deleted to save space. 
+Namelists available for each real.exe run. WPS preprocessing the
+same as was done for inputs to the hybrid runs. 
+
+See HPRM files D2016-63083 and D2016-138348 for details of 
+ERA-interim inputs used for this (and the hybrid) runs.
