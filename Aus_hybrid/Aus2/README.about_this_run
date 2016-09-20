@@ -17,5 +17,5 @@ Run set up using the hybrid WRF cyclone model workflow
 
 Run parameters
 - Steering wind southerly at 8 m/s
-- TC centred at i200, j350 of parent domain (domain config script "namelist.wps")
+- TC centred at i200, j350 of parent domain (domain config script same as Aus1)
 - Model run for 12 days (10-22nd April)
