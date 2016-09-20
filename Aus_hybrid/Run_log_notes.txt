@@ -25,3 +25,7 @@ Aus5
    - i = 200, j = 300.
 - Ideal storm data from /g/data1/w85/ett/em_tropical_cyclone_13-09-16
 
+Reports
+- These experiments are written up in two reports available on HPRM:
+D2016-63083	Extratropical Transitioning Wind Fields
+D2016-138348	Extratropical Transitioning Wind Fields Technical Note
