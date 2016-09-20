@@ -13,7 +13,7 @@ Run set up using the hybrid WRF cyclone model workflow
 - Duplicate synthetic met_em file using "make_metem_files_v3_Aus1.csh"
 - scripts used to produce synthetic storm and metem files in this folder
 - scripts managed in Git repository
-  - https://github.com/CEKrause/WRFV_3.7.1/tree/steering_tc
+  - https://github.com/CEKrause/WRFV_3.7.1-gdata1-postprocessing/tree/master/Aus_hybrid/Aus1
 
 Run parameters
 - Steering wind southerly at 8 m/s
