@@ -1,0 +1,21 @@
+Run Aus4 using the hybrid WRF cyclone model
+
+Run by: Claire Krause
+Date: 13/9/2016
+Run namelist: namelist.input
+Job submission script: run_wrf_real_Aus5
+
+Run set up using the hybrid WRF cyclone model workflow
+- Ideal TC from em_tropical_cyclone_13-09-16
+- met_em files from ERA-interim, 1989-03-26-00
+- Create synthetic storm met_em using "make_synthetic_data_v3_Aus5.ncl"
+  - hybrid met_em file:  met_em.d01.1989-04-01_00:00:00_i200_j300_spd8_dir0.nc
+- Duplicate synthetic met_em file using "make_metem_files_v3_Aus5.csh"
+- scripts used to produce synthetic storm and metem files in this folder
+- scripts managed in Git repository
+  - https://github.com/CEKrause/WRFV_3.7.1-gdata1-postprocessing/tree/master/Aus_hybrid/Aus5
+
+Run parameters
+- Steering wind southerly at 8 m/s
+- TC centred at i200, j300 of parent domain (domain config same as Aus4)
+- Model run for 12 days (10-22nd April)
