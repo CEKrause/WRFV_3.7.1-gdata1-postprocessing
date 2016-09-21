@@ -224,7 +224,7 @@ exit
 
 fi
 
-if [ $dyncore = "NMM" ]; then
+#if [ $dyncore = "NMM" ]; then
 
 if [ $runcopygb = "TRUE" ]; then
 
