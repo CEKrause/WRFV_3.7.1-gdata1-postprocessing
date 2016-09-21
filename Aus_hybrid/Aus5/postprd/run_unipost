@@ -51,6 +51,8 @@ export POSTEXEC=${UNIPOST_HOME}/bin
 
 #Specify Dyn Core (ARW or NMM in upper case)
 dyncore="ARW"
+runcopygb="TRUE" # Create a new variable to force execution of copygb.exe 
+
 
 if [ $dyncore = "NMM" ]; then
    export tag=NMM
@@ -224,6 +226,8 @@ fi
 
 if [ $dyncore = "NMM" ]; then
 
+if [ $runcopygb = "TRUE" ]; then
+
 #######################################################################
 # 2. Run copygb
 # 
@@ -267,12 +271,12 @@ if [ $dyncore = "NMM" ]; then
 #  Option -3.1:
 #    To run for "Lambert Comformal map projection" uncomment the following line
 #
- read nav < 'copygb_gridnav.txt'
+# read nav < 'copygb_gridnav.txt'
 #
 #  Option -3.2:
 #    To run for "lat-lon" uncomment the following line 
 #
-#read nav < 'copygb_hwrf.txt'
+read nav < 'copygb_hwrf.txt'
 #
 export nav
 #
@@ -291,6 +295,8 @@ then
 
 echo 'copygb FAILED, EXITTING'
 exit
+else 
+rm -f WRFPRS_${domain}.${fhr} # Delete the original GRIB file, leaving only the modified file
 
 fi
 
@@ -298,7 +304,7 @@ fi
 #   End of copygb job
 #----------------------------------------------------------------------
 
-elif [ $dyncore = "ARW" ]; then
+elif [ $runcopygb = "FALSE" ]; then
     ln -s WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
 fi
 
