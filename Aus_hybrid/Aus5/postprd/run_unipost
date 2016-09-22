@@ -1,6 +1,6 @@
 #!/bin/ksh
 #PBS -Pw85
-#PBS -l walltime=05:00:00
+#PBS -l walltime=12:00:00
 #PBS -l mem=128GB
 #PBS -l ncpus=128
 #PBS -j oe
@@ -15,7 +15,8 @@ module load netcdf/4.3.3.1
 
 #
 set -x
-
+logfile=run_unipost.log
+echo "Running unipost" > $logfile
 #
 # 20101227 - changed typeset for post output for new format 
 #
@@ -48,6 +49,7 @@ export WRFPATH=${TOP_DIR}/WRF
 
 export UNIPOST_HOME=/short/w85/cxa547/WRFV_3.7.1/UPPV2.2
 export POSTEXEC=${UNIPOST_HOME}/bin
+export COPYGBPATH=/short/w85/cxa547/WRFV_3.7.1/UPP/bin
 
 #Specify Dyn Core (ARW or NMM in upper case)
 dyncore="ARW"
@@ -59,7 +61,7 @@ if [ $dyncore = "NMM" ]; then
 elif [ $dyncore = "ARW" ]; then
    export tag=NCAR
 else
-    echo "${dyncore} is not supported. Edit script to choose ARW or NMM dyncore."
+    echo "${dyncore} is not supported. Edit script to choose ARW or NMM dyncore." >> $logfile
     exit
 fi
 
@@ -148,8 +150,8 @@ MM=`echo $NEWDATE | cut -c5-6`
 DD=`echo $NEWDATE | cut -c7-8`
 HH=`echo $NEWDATE | cut -c9-10`
 
-echo 'NEWDATE' $NEWDATE
-echo 'YY' $YY
+echo 'NEWDATE' $NEWDATE >> $logfile
+echo 'YY' $YY >> $logfile
 
 #--- EDIT HERE --------------------------------------------------------
 # Update domains
@@ -194,7 +196,7 @@ ln -sf wrf_cntrl.parm fort.14
 
 ulimit -s unlimited
 
-echo running with $PBS_NCPUS mpi ranks
+echo running with $PBS_NCPUS mpi ranks >> $logfile
 time mpirun -np $PBS_NCPUS -report-bindings  ${POSTEXEC}/unipost.exe > unipost_${domain}.${fhr}.out 2>&1
 
 # debugger runs - enter your debugger and hour of error
@@ -219,7 +221,7 @@ err1=$?
 if test "$err1" -ne 0
 then
 
-echo 'UNIPOST FAILED, EXITTING'
+echo 'UNIPOST FAILED, EXITTING' >> $logfile
 exit
 
 fi
@@ -280,7 +282,19 @@ read nav < 'copygb_hwrf.txt'
 #
 export nav
 #
-${POSTEXEC}/copygb.exe -xg"${nav}" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+echo "Running copygb with -xg\"${nav}\" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}" >> $logfile
+#time mpirun -np $PBS_NCPUS -report-bindings ${POSTEXEC}/copygb.exe -xg\""${nav}"\" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+#echo $nav
+
+#CMD="$(${POSTEXEC}/copygb.exe -xg \"${nav} \" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr})"
+#echo $CMD
+
+time mpirun -np $PBS_NCPUS -report-bindings ${POSTEXEC}/copygb.exe -xg "$(echo $nav) " WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+OUT=$?
+if test "$OUT" -ne 0; then
+    echo "copygb failed" >> $logfile
+    exit
+fi
 #
 # (For more info on "copygb" see WRF-NMM User's Guide, Chapter-7.)
 #----------------------------------------------------------------------
@@ -293,7 +307,7 @@ err1=$?
 if test "$err1" -ne 0
 then
 
-echo 'copygb FAILED, EXITTING'
+echo 'copygb FAILED, EXITTING' >> $logfile
 exit
 else 
 rm -f WRFPRS_${domain}.${fhr} # Delete the original GRIB file, leaving only the modified file
@@ -317,5 +331,5 @@ NEWDATE=`${POSTEXEC}/ndate.exe +$((10#${fhr})) $startdate`
 done
 
 date
-echo "End of Output Job"
+echo "End of Output Job" >> $logfile
 exit
