@@ -20,11 +20,11 @@ fhr=`printf "%02i" ${fhr}`
 fmin=`printf "%05i" ${fmin}`
 
 # Link UPP output to new name
-ln -sf WRFPRS_${domain}.${fhr} hwrf.coupled.Nedhybrid.1989041000.f${fmin}
+ln -sf wrfprs_${domain}.${fhr} hwrf.coupled.Nedhybrid.1989041000.f${fmin}
 
 # run grib index with the new file name
-echo 'working on WRFPRS_' ${domain} '.' ${fhr}
-./grbindex.exe WRFPRS_${domain}.${fhr} hwrf.coupled.Nedhybrid.1989041000.f${fmin}.ix
+echo 'working on wrfprs_' ${domain} '.' ${fhr}
+./grbindex.exe wrfprs_${domain}.${fhr} hwrf.coupled.Nedhybrid.1989041000.f${fmin}.ix
 
 # Check that it ran correctly
 err1=$?
