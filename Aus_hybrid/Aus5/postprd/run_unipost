@@ -12,6 +12,7 @@
 module purge
 module load openmpi/1.6.3
 module load netcdf/4.3.3.1
+module load grads
 
 #
 set -x
@@ -95,7 +96,7 @@ ln -fs ${WRFPATH}/run/ETAMPNEW_DATA.expanded_rain hires_micro_lookup.dat
 #   for one to update this file, therefore the link goes back to the
 #   program directory - this is true for params_grib2_tbl_new also - a
 #   file which defines the GRIB2 table values
-ln -fs ../parm/wrf_cntrl.parm wrf_cntrl.parm
+#ln -fs ../parm/wrf_cntrl.parm wrf_cntrl.parm
 ln -fs ${UNIPOST_HOME}/parm/post_avblflds.xml post_avblflds.xml
 ln -fs ../parm/postcntrl.xml postcntrl.xml
 ln -fs ${UNIPOST_HOME}/src/lib/g2tmpl/params_grib2_tbl_new params_grib2_tbl_new
@@ -278,7 +279,7 @@ if [ $runcopygb = "TRUE" ]; then
 #  Option -3.2:
 #    To run for "lat-lon" uncomment the following line 
 #
-read nav < 'copygb_hwrf.txt'
+read nav < 'copygb_hwrf_fixed.txt'
 #
 export nav
 #
@@ -289,7 +290,7 @@ echo "Running copygb with -xg\"${nav}\" WRFPRS_${domain}.${fhr} wrfprs_${domain}
 #CMD="$(${POSTEXEC}/copygb.exe -xg \"${nav} \" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr})"
 #echo $CMD
 
-time mpirun -np $PBS_NCPUS -report-bindings ${POSTEXEC}/copygb.exe -xg "$(echo $nav) " WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+${POSTEXEC}/copygb.exe -xg "$(echo $nav) " WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
 OUT=$?
 if test "$OUT" -ne 0; then
     echo "copygb failed" >> $logfile
