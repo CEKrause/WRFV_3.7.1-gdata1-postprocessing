@@ -67,7 +67,7 @@
 'set lat -18.3'
 'latt = -18.3'
 * Set lon so it's +- 1000 km from storm centre
-'lon = 105.2'
+'lon = 115.2'
 
 * How far is 1 km at this lat?
 'pi = 3.1415926'
@@ -78,7 +78,7 @@
 'lonmax = lon - x'
 'lonmin = lon + x'
 *'set lon lonmin lonmax'
-'set lon 95.7206 114.679'
+'set lon 105.721 124.679'
 
 * Set all the levels so it plots a cross section
 'set lev 1000 100'
@@ -91,7 +91,7 @@
 'draw xlab Longitude'
 
 * Now calculate anomalies
-'allave = ave(hgtprs,lon=95.7206,lon=114.679)'
+'allave = ave(hgtprs,lon=105.721,lon=124.679)'
 * and plot...
 'set clevs -220 -200 -180 -160 -140 -120 -100 -80 -60 -40 -20 0'
 'set ccols 9 14 4 11 5 13 3 10 12 8 2 6'
