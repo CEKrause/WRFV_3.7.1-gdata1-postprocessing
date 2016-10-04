@@ -1,0 +1,336 @@
+#!/bin/ksh
+#PBS -Pw85
+#PBS -l walltime=05:00:00
+#PBS -l mem=128GB
+#PBS -l ncpus=128
+#PBS -j oe
+#PBS -q normal
+#PBS -m abe
+#PBS -M claire.krause@ga.gov.au
+#PBS -l other=gdata1
+
+module purge
+module load openmpi/1.6.3
+module load netcdf/4.3.3.1
+module load grads
+
+#
+set -x
+logfile=run_unipost.log
+echo "Running unipost" > $logfile
+#
+# 20101227 - changed typeset for post output for new format 
+#
+# August 2005: Hui-Ya Chuang, NCEP: This script uses 
+# NCEP's Unipost to post processes WRF native model 
+# output, and uses copygb to horizontally interpolate posted 
+# output from native A-E to a regular projection grid. 
+#
+# July 2006: Meral Demirtas, NCAR/DTC: Added new "copygb" 
+# options and revised some parts for clarity. 
+#
+#--------------------------------------------------------
+# This script performs 2 jobs:
+#
+# 1. Run Unipost
+# 2. Run copygb to horizontally interpolate output from 
+#    native A-E to a regular projection grid
+#--------------------------------------------------------
+
+#--- EDIT HERE --------------------------------------------------------
+# TOP_DIR - where you put the UPP build directory
+# DOMAINPATH - where do you want me to do my work
+# WRFPATH - Where do you have a version of WRF compiled
+# *** Datafile is entered below - it may reference these variables
+# dyncore - set to the model used 
+#----------------------------------------------------------------------
+export TOP_DIR=/short/w85/cek156/WRFV_3.7.1
+export DOMAINPATH=/g/data1/w85/ett/Aus_hybrid/Aus1
+export WRFPATH=${TOP_DIR}/WRF
+
+export UNIPOST_HOME=/short/w85/cxa547/WRFV_3.7.1/UPPV2.2
+export POSTEXEC=${UNIPOST_HOME}/bin
+export COPYGBPATH=/short/w85/cxa547/WRFV_3.7.1/UPP/bin
+
+#Specify Dyn Core (ARW or NMM in upper case)
+dyncore="ARW"
+runcopygb="TRUE" # Create a new variable to force execution of copygb.exe 
+
+
+if [ $dyncore = "NMM" ]; then
+   export tag=NMM
+elif [ $dyncore = "ARW" ]; then
+   export tag=NCAR
+else
+    echo "${dyncore} is not supported. Edit script to choose ARW or NMM dyncore." >> $logfile
+    exit
+fi
+
+#--- EDIT HERE --------------------------------------------------------
+# startdate = Forecast start date
+# fhr =  first forecast hour to be post-processed
+# lastfhr = last forecast hour to be post-processed
+# incrementhr = the incement (in hours) between forecast files
+#----------------------------------------------------------------------
+
+export startdate=1989041000
+
+export fhr=00
+export lastfhr=220
+export incrementhr=1
+
+# cd to working directory
+cd ${DOMAINPATH}/postprd
+
+# Link microphysic's tables - code will use based on mp_physics option
+# found in data
+ln -fs ${WRFPATH}/run/ETAMPNEW_DATA nam_micro_lookup.dat
+ln -fs ${WRFPATH}/run/ETAMPNEW_DATA.expanded_rain hires_micro_lookup.dat
+
+# Get local copy of parm file
+# For GRIB1 the code uses wrf_cntrl.parm to select variables for output
+#   the available fields are set at compilation
+# For GRIB2 the code uses postcntrl.xml to select variables for output
+#   the available fields are defined in post_avlbflds.xml -- while we
+#   set a link to this file for reading during runtime it is not typical
+#   for one to update this file, therefore the link goes back to the
+#   program directory - this is true for params_grib2_tbl_new also - a
+#   file which defines the GRIB2 table values
+ln -fs ../parm/wrf_cntrl.parm wrf_cntrl.parm
+ln -fs ${UNIPOST_HOME}/parm/post_avblflds.xml post_avblflds.xml
+ln -fs ../parm/postcntrl.xml postcntrl.xml
+ln -fs ${UNIPOST_HOME}/src/lib/g2tmpl/params_grib2_tbl_new params_grib2_tbl_new
+
+# link coefficients for crtm2 (simulated GOES)
+CRTMDIR=${UNIPOST_HOME}/src/lib/crtm2/src/fix
+ln -fs $CRTMDIR/EmisCoeff/Big_Endian/EmisCoeff.bin           ./
+ln -fs $CRTMDIR/AerosolCoeff/Big_Endian/AerosolCoeff.bin     ./
+ln -fs $CRTMDIR/CloudCoeff/Big_Endian/CloudCoeff.bin         ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/imgr_g12.SpcCoeff.bin    ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/imgr_g12.TauCoeff.bin    ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/imgr_g11.SpcCoeff.bin    ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/imgr_g11.TauCoeff.bin    ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/amsre_aqua.SpcCoeff.bin  ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/amsre_aqua.TauCoeff.bin  ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/tmi_trmm.SpcCoeff.bin    ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/tmi_trmm.TauCoeff.bin    ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/ssmi_f15.SpcCoeff.bin    ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/ssmi_f15.TauCoeff.bin    ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/ssmis_f20.SpcCoeff.bin   ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/ssmis_f20.TauCoeff.bin   ./
+ln -fs $CRTMDIR/SpcCoeff/Big_Endian/ssmis_f17.SpcCoeff.bin   ./
+ln -fs $CRTMDIR/TauCoeff/ODPS/Big_Endian/ssmis_f17.TauCoeff.bin   ./
+
+#---EDIT HERE --------------------------------------------------------
+# tmmark is an variable used as the file extention of the output
+#    filename .GrbF is used if this variable is not set
+# COMSP is a variable used as the initial string of the output filename
+#----------------------------------------------------------------------
+export tmmark=tm00
+export MP_SHARED_MEMORY=yes
+export MP_LABELIO=yes
+
+#######################################################
+# 1. Run Unipost
+#
+# The Unipost is used to read native WRF model 
+# output and put out isobaric state fields and derived fields.
+#######################################################
+
+export NEWDATE=$startdate
+
+while [ $((10#${fhr})) -le $((10#${lastfhr})) ] ; do
+
+# Formatted fhr for filenames
+fhr=`printf "%02i" ${fhr}`
+
+NEWDATE=`${POSTEXEC}/ndate.exe +$((10#${fhr})) $startdate`
+
+YY=`echo $NEWDATE | cut -c1-4`
+MM=`echo $NEWDATE | cut -c5-6`
+DD=`echo $NEWDATE | cut -c7-8`
+HH=`echo $NEWDATE | cut -c9-10`
+
+echo 'NEWDATE' $NEWDATE >> $logfile
+echo 'YY' $YY >> $logfile
+
+#--- EDIT HERE --------------------------------------------------------
+# Update domains
+# ie. for domain in d01 d02 d03
+for domain in d01
+do
+
+#--- EDIT HERE --------------------------------------------------------
+# Create input file for Unipost 
+#   First line is where your wrfout data is
+#   Second line is the format
+#   ** FOR GRIB2 the thrid line is "grib2" and the next 2 lines move down **
+#   ** DO NOT SET TO "grib" or "grib1" or code will crash **
+#   Third line is the time for this process file
+#   Forth line is a tag identifing the model
+#----------------------------------------------------------------------
+cat > itag <<EOF
+../wrfout_d01_1989-04-10_00:00:00
+netcdf
+${YY}-${MM}-${DD}_${HH}:00:00
+${tag}
+EOF
+
+#-----------------------------------------------------------------------
+#   Run unipost.
+#-----------------------------------------------------------------------
+rm fort.*
+
+ln -sf wrf_cntrl.parm fort.14
+
+#--- EDIT HERE --------------------------------------------------------
+# Uncomment one
+#   mpirun for MPI dmpar compile -- UPDATE FOR YOUR SYSTEM!!! ** FOR
+#      now there are two environment variables tmmark and COMSP
+#   unipost.exe for serial compile
+#----------------------------------------------------------------------
+# dmpar runs
+#  mpirun -np 1 ${POSTEXEC}/unipost.exe > unipost_${domain}.${fhr}.out 2>&1
+
+# Serial run command
+# ${POSTEXEC}/unipost.exe > unipost_${domain}.${fhr}.out 2>&1
+
+ulimit -s unlimited
+
+echo running with $PBS_NCPUS mpi ranks >> $logfile
+time mpirun -np $PBS_NCPUS -report-bindings  ${POSTEXEC}/unipost.exe > unipost_${domain}.${fhr}.out 2>&1
+
+# debugger runs - enter your debugger and hour of error
+#if [[ $((10#${fhr})) -eq 3 ]]; then
+#  mpirun.dbg.totalview -progname ${POSTEXEC}/unipost.exe > unipost_${domain}.${fhr}.out 2>&1
+#else
+#  mpirun -np 1 ${POSTEXEC}/unipost.exe > unipost_${domain}.${fhr}.out 2>&1
+#fi
+
+#
+# This prefix was given in the wrf_cntl.parm file
+mv WRFPRS${fhr}.${tmmark} WRFPRS_${domain}.${fhr}
+
+#
+#----------------------------------------------------------------------
+#   End of unipost job
+#----------------------------------------------------------------------
+
+ls -l WRFPRS_${domain}.${fhr}
+err1=$?
+
+if test "$err1" -ne 0
+then
+
+echo 'UNIPOST FAILED, EXITTING' >> $logfile
+exit
+
+fi
+
+#if [ $dyncore = "NMM" ]; then
+
+if [ $runcopygb = "TRUE" ]; then
+
+#######################################################################
+# 2. Run copygb
+# 
+# Copygb interpolates Unipost output from its native 
+# grid to a regular projection grid. The package copygb 
+# is used to horizontally interpolate from one domain 
+# to another, it is necessary to run this step for wrf-nmm 
+# (but not for wrf-arw) because wrf-nmm's computational 
+# domain is on rotated Arakawa-E grid
+#
+# Copygb can be run in 3 ways as explained below. 
+# Uncomment the preferable one.
+#
+#----------------------------------------------------------------------
+#
+# Option 1: 
+# Copygb is run with a pre-defined AWIPS grid 
+# (variable $gridno, see below) Specify the grid to 
+# interpolate the forecast onto. To use standard AWIPS grids 
+# (list in  http://wwwt.emc.ncep.noaa.gov/mmb/namgrids/ or 
+# or http://www.nco.ncep.noaa.gov/pmb/docs/on388/tableb.html),
+# set the number of the grid in variable gridno below.
+# To use a user defined grid, see explanation above copygb command.
+#
+# export gridno=212
+#
+#${POSTEXEC}/copygb.exe -xg${gridno} WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+#
+#----------------------------------------------------------------------
+#
+#  Option 2: 
+#  Copygb ingests a kgds definition on the command line.
+#${POSTEXEC}/copygb.exe -xg"255 3 109 91 37748 -77613 8 -71000 10379 9900 0 64 42000 42000" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+#
+#----------------------------------------------------------------------
+#
+#  Option 3: 
+#  Copygb can ingests contents of files too. For example:
+#     copygb_gridnav.txt or copygb_hwrf.txt through variable $nav.
+# 
+#  Option -3.1:
+#    To run for "Lambert Comformal map projection" uncomment the following line
+#
+#read nav < 'copygb_gridnav.txt'
+#
+#  Option -3.2:
+#    To run for "lat-lon" uncomment the following line 
+#
+ read nav < 'copygb_hwrf.txt'
+#
+export nav
+#
+echo "Running copygb with -xg\"${nav}\" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}" >> $logfile
+#time mpirun -np $PBS_NCPUS -report-bindings ${POSTEXEC}/copygb.exe -xg\""${nav}"\" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+#echo $nav
+
+#CMD="$(${POSTEXEC}/copygb.exe -xg \"${nav} \" WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr})"
+#echo $CMD
+
+${POSTEXEC}/copygb.exe -xg "$(echo $nav) " WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+OUT=$?
+if test "$OUT" -ne 0; then
+    echo "copygb failed" >> $logfile
+    exit
+fi
+#
+# (For more info on "copygb" see WRF-NMM User's Guide, Chapter-7.)
+#----------------------------------------------------------------------
+
+# Check to see whether "copygb" created the requested file.
+
+ls -l wrfprs_${domain}.${fhr}
+err1=$?
+
+if test "$err1" -ne 0
+then
+
+echo 'copygb FAILED, EXITTING' >> $logfile
+exit
+else 
+rm -f WRFPRS_${domain}.${fhr} # Delete the original GRIB file, leaving only the modified file
+
+fi
+
+#----------------------------------------------------------------------
+#   End of copygb job
+#----------------------------------------------------------------------
+
+elif [ $runcopygb = "FALSE" ]; then
+    ln -s WRFPRS_${domain}.${fhr} wrfprs_${domain}.${fhr}
+fi
+
+done
+
+fhr=$((10#${fhr}+$((${incrementhr}))))
+
+NEWDATE=`${POSTEXEC}/ndate.exe +$((10#${fhr})) $startdate`
+
+done
+
+date
+echo "End of Output Job" >> $logfile
+exit
