@@ -37,6 +37,7 @@
 'draw title Hour 48 wind speed around vortex - Aus5'
 'draw ylab Latitude'
 'draw xlab Longitude'
+'run cbarn.gs'
 
 * Save file
 'gxprint wind48hrAus5.png x600 y400'
@@ -73,6 +74,7 @@
 'draw title Hour 72 wind speed around vortex - Aus5'
 'draw ylab Latitude'
 'draw xlab Longitude'
+'run cbarn.gs'
 
 * Save file
 'gxprint wind72hrAus5.png x600 y400'
@@ -109,6 +111,7 @@
 'draw title Hour 96 wind speed around vortex - Aus5'
 'draw ylab Latitude'
 'draw xlab Longitude'
+'run cbarn.gs'
 
 * Save file
 'gxprint wind96hrAus5.png x600 y400'
@@ -145,6 +148,7 @@
 'draw title Hour 120 wind speed around vortex - Aus5'
 'draw ylab Latitude'
 'draw xlab Longitude'
+'run cbarn.gs'
 
 * Save file
 'gxprint wind120hrAus5.png x600 y400'
