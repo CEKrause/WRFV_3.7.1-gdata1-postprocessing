@@ -153,6 +153,110 @@
 * Save file
 'gxprint wind120hrAus5.png x600 y400'
 
-'close 1'
-'clear'
+'reinit'
 
+********** Now do 144 hrs *******************
+
+* Which file are we plotting now?
+'open wrfprs_d01.144.ctl'
+
+* Set background colour to white
+'set display white'
+'set timelab off'
+'set grads off'
+
+* Calculate wind speed
+'wspd=mag(ugrd10m,vgrd10m)'
+* Define the size of the display
+* Where is the centre of the vortex at this stage?
+* +- 1 degree
+'set lon 102.7 104.7'
+'set lat -34.6 -32.6'
+'set gxout shaded'
+'d wspd'
+'set gxout contour'
+'d wspd'
+'set gxout vector'
+'set ccolor 0'
+'set arrscl 0.5 40'
+'d ugrd10m;vgrd10m'
+
+'draw title Hour 144 wind speed around vortex - Aus5'
+'draw ylab Latitude'
+'draw xlab Longitude'
+'run cbarn.gs'
+
+* Save file
+'gxprint wind144hrAus5.png x600 y400'
+
+********** Now do 168 hrs *******************
+
+'reinit'
+
+* Which file are we plotting now?
+'open wrfprs_d01.168.ctl'
+
+* Set background colour to white
+'set display white'
+'set timelab off'
+'set grads off'
+
+* Calculate wind speed
+'wspd=mag(ugrd10m,vgrd10m)'
+* Define the size of the display
+* Where is the centre of the vortex at this stage?
+* +- 1 degree
+'set lon 98 100'
+'set lat -36 -34'
+'set gxout shaded'
+'d wspd'
+'set gxout contour'
+'d wspd'
+'set gxout vector'
+'set ccolor 0'
+'set arrscl 0.5 40'
+'d ugrd10m;vgrd10m'
+
+'draw title Hour 168 wind speed around vortex - Aus5'
+'draw ylab Latitude'
+'draw xlab Longitude'
+'run cbarn.gs'
+
+* Save file
+'gxprint wind168hrAus5.png x600 y400'
+
+********** Now do 192 hrs *******************
+
+'reinit'
+
+* Which file are we plotting now?
+'open wrfprs_d01.192.ctl'
+
+* Set background colour to white
+'set display white'
+'set timelab off'
+'set grads off'
+
+* Calculate wind speed
+'wspd=mag(ugrd10m,vgrd10m)'
+* Define the size of the display
+* Where is the centre of the vortex at this stage?
+* +- 1 degree
+'set lon 94 96'
+'set lat -36.2 -34.2'
+'set gxout shaded'
+'d wspd'
+'set gxout contour'
+'d wspd'
+'set gxout vector'
+'set ccolor 0'
+'set arrscl 0.5 40'
+'d ugrd10m;vgrd10m'
+
+'draw title Hour 192 wind speed around vortex - Aus5'
+'draw ylab Latitude'
+'draw xlab Longitude'
+'run cbarn.gs'
+
+* Save file
+'gxprint wind192hrAus5.png x600 y400'
