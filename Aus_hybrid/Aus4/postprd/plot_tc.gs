@@ -25,8 +25,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 105.2 107.2'
-'set lat -17.3 -15.3'
+'set lon 104.2 108.2'
+'set lat -18.3 -14.3'
 'set gxout shaded'
 'set cmax 55'
 'set cmin 0'
@@ -64,8 +64,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 107.3 109.3'
-'set lat -18.5 -16.5'
+'set lon 106.3 110.3'
+'set lat -19.5 -15.5'
 'set gxout shaded'
 'set cmax 55'
 'set cmin 0'
@@ -104,8 +104,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 109.7 111.7'
-'set lat -22.6 -20.6'
+'set lon 108.7 112.7'
+'set lat -23.6 -19.6'
 'set gxout shaded'
 'set cmax 55'
 'set cmin 0'
@@ -144,8 +144,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 111 113'
-'set lat -26.8 -24.8'
+'set lon 110 114'
+'set lat -27.8 -23.8'
 'set gxout shaded'
 'set cmax 55'
 'set cmin 0'
@@ -166,3 +166,119 @@
 
 * Save file
 'gxprint wind120hrAus4.png x600 y400'
+'reinit'
+
+********** Now do 144 hrs *******************
+
+* Which file are we plotting now?
+'open wrfprs_d01.144.ctl'
+
+* Set background colour to white
+'set display white'
+'set timelab off'
+'set grads off'
+
+* Calculate wind speed
+'wspd=mag(ugrd10m,vgrd10m)'
+* Define the size of the display
+* Where is the centre of the vortex at this stage?
+* +- 1 degree
+'set lon 109.4 113.4'
+'set lat -33.2 -29.2'
+'set gxout shaded'
+'set cmax 55'
+'set cmin 0'
+'d wspd'
+'set gxout contour'
+'set cmax 55'
+'set cmin 0'
+'d wspd'
+'set gxout vector'
+'set ccolor 0'
+'set arrscl 0.5 40'
+'d ugrd10m;vgrd10m'
+
+'draw title Hour 144 wind speed around vortex - Aus4'
+'draw ylab Latitude'
+'draw xlab Longitude'
+'run cbarn.gs'
+
+* Save file
+'gxprint wind144hrAus4.png x600 y400'
+
+********** Now do 168 hrs *******************
+
+* Which file are we plotting now?
+'open wrfprs_d01.168.ctl'
+
+* Set background colour to white
+'set display white'
+'set timelab off'
+'set grads off'
+
+* Calculate wind speed
+'wspd=mag(ugrd10m,vgrd10m)'
+* Define the size of the display
+* Where is the centre of the vortex at this stage?
+* +- 1 degree
+'set lon 105.7 109.7'
+'set lat -35.4 -31.4'
+'set gxout shaded'
+'set cmax 55'
+'set cmin 0'
+'d wspd'
+'set gxout contour'
+'set cmax 55'
+'set cmin 0'
+'d wspd'
+'set gxout vector'
+'set ccolor 0'
+'set arrscl 0.5 40'
+'d ugrd10m;vgrd10m'
+
+'draw title Hour 168 wind speed around vortex - Aus4'
+'draw ylab Latitude'
+'draw xlab Longitude'
+'run cbarn.gs'
+
+* Save file
+'gxprint wind168hrAus4.png x600 y400'
+
+********** Now do 192 hrs *******************
+'reinit'
+
+* Which file are we plotting now?
+'open wrfprs_d01.192.ctl'
+
+* Set background colour to white
+'set display white'
+'set timelab off'
+'set grads off'
+
+* Calculate wind speed
+'wspd=mag(ugrd10m,vgrd10m)'
+* Define the size of the display
+* Where is the centre of the vortex at this stage?
+* +- 1 degree
+'set lon 101.9 105.9'
+'set lat -35.8 -31.8'
+'set gxout shaded'
+'set cmax 55'
+'set cmin 0'
+'d wspd'
+'set gxout contour'
+'set cmax 55'
+'set cmin 0'
+'d wspd'
+'set gxout vector'
+'set ccolor 0'
+'set arrscl 0.5 40'
+'d ugrd10m;vgrd10m'
+
+'draw title Hour 192 wind speed around vortex - Aus4'
+'draw ylab Latitude'
+'draw xlab Longitude'
+'run cbarn.gs'
+
+* Save file
+'gxprint wind192hrAus4.png x600 y400'
