@@ -203,3 +203,153 @@
 
 * Save file
 'gxprint structure120hrAus2.png x450 y400'
+
+****************** HR 144 ******************************************
+'reinit'
+
+* Set up plot
+'set display white'
+'set grads off'
+'draw string 1 0.5 29.4 degrees south'
+
+* Which file are we working with?
+'open wrfprs_d01.144.ctl'
+
+* Set lat to centr of storm (just grabbed from plot_tc.gs)
+'set lat -29.4'
+'latt = -29.4'
+
+* Set lon so it's +- 1000 km from storm centre
+'lon = 107.1'
+* How far is 1 km at this lat?
+'pi = 3.1415926'
+'latr = latt * pi/180'
+'x = 111.111*cos(latr)' 
+* now work out for 1000 km
+'x = 1/x*1000' 
+'lonmax = lon - x'
+'lonmin = lon + x'
+*'set lon lonmin lonmax'
+'set lon 96.7696 117.43'
+
+* Set all the levels so it plots a cross section
+'set lev 1000 100'
+'set zlog on'
+
+'set gxout contour'
+'set ccolor 1'
+'d hgtprs'
+'draw ylab Pressure (hPa)'
+'draw xlab Longitude'
+
+* Now calculate anomalies
+'allave = ave(hgtprs,lon=96.7696,lon=117.43)'
+* and plot...
+'set clevs -220 -200 -180 -160 -140 -120 -100 -80 -60 -40 -20 0'
+'set ccols 9 14 4 11 5 13 3 10 12 8 2 6'
+'d hgtprs - allave'
+
+'draw title Hour 144 vortex structure - Aus2'
+
+* Save file
+'gxprint structure144hrAus2.png x450 y400'
+
+****************** HR 168 ******************************************
+'reinit'
+
+* Set up plot
+'set display white'
+'set grads off'
+'draw string 1 0.5 31.9 degrees south'
+
+* Which file are we working with?
+'open wrfprs_d01.168.ctl'
+
+* Set lat to centr of storm (just grabbed from plot_tc.gs)
+'set lat -31.9'
+'latt = -31.9'
+
+* Set lon so it's +- 1000 km from storm centre
+'lon = 104'
+* How far is 1 km at this lat?
+'pi = 3.1415926'
+'latr = latt * pi/180'
+'x = 111.111*cos(latr)' 
+* now work out for 1000 km
+'x = 1/x*1000' 
+'lonmax = lon - x'
+'lonmin = lon + x'
+*'set lon lonmin lonmax'
+'set lon 93.3989 114.601'
+
+* Set all the levels so it plots a cross section
+'set lev 1000 100'
+'set zlog on'
+
+'set gxout contour'
+'set ccolor 1'
+'d hgtprs'
+'draw ylab Pressure (hPa)'
+'draw xlab Longitude'
+
+* Now calculate anomalies
+'allave = ave(hgtprs,lon=93.3989,lon=114.601)'
+* and plot...
+'set clevs -220 -200 -180 -160 -140 -120 -100 -80 -60 -40 -20 0'
+'set ccols 9 14 4 11 5 13 3 10 12 8 2 6'
+'d hgtprs - allave'
+
+'draw title Hour 168 vortex structure - Aus2'
+
+* Save file
+'gxprint structure168hrAus2.png x450 y400'
+
+****************** HR 192 ******************************************
+'reinit'
+
+* Set up plot
+'set display white'
+'set grads off'
+'draw string 1 0.5 32.3 degrees south'
+
+* Which file are we working with?
+'open wrfprs_d01.192.ctl'
+
+* Set lat to centr of storm (just grabbed from plot_tc.gs)
+'set lat -32.3'
+'latt = -32.3'
+
+* Set lon so it's +- 1000 km from storm centre
+'lon = 100.7'
+* How far is 1 km at this lat?
+'pi = 3.1415926'
+'latr = latt * pi/180'
+'x = 111.111*cos(latr)' 
+* now work out for 1000 km
+'x = 1/x*1000' 
+'lonmax = lon - x'
+'lonmin = lon + x'
+*'set lon lonmin lonmax'
+'set lon 90.0524 111.348'
+
+* Set all the levels so it plots a cross section
+'set lev 1000 100'
+'set zlog on'
+
+'set gxout contour'
+'set ccolor 1'
+'d hgtprs'
+'draw ylab Pressure (hPa)'
+'draw xlab Longitude'
+
+* Now calculate anomalies
+'allave = ave(hgtprs,lon=90.0524,lon=111.348)'
+* and plot...
+'set clevs -220 -200 -180 -160 -140 -120 -100 -80 -60 -40 -20 0'
+'set ccols 9 14 4 11 5 13 3 10 12 8 2 6'
+'d hgtprs - allave'
+
+'draw title Hour 192 vortex structure - Aus2'
+
+* Save file
+'gxprint structure192hrAus2.png x450 y400'
