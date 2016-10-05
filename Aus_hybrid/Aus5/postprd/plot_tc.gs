@@ -24,8 +24,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 105.9 107.9'
-'set lat -22.8 -20.8'
+'set lon 104.9 108.9'
+'set lat -23.8 -19.8'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
@@ -60,8 +60,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 106.2 108.2'
-'set lat -23.6 -21.6'
+'set lon 105.2 109.2'
+'set lat -24.6 -20.6'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
@@ -97,8 +97,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 106.4 108.4'
-'set lat -26.9 -24.9'
+'set lon 105.4 109.4'
+'set lat -27.9 -23.9'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
@@ -134,8 +134,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 105.7 107.7'
-'set lat -30.7 -28.7'
+'set lon 104.7 108.7'
+'set lat -31.7 -27.7'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
@@ -170,8 +170,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 102.7 104.7'
-'set lat -34.6 -32.6'
+'set lon 101.7 105.7'
+'set lat -35.6 -31.6'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
@@ -206,8 +206,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 98 100'
-'set lat -36 -34'
+'set lon 97 101'
+'set lat -37 -33'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
@@ -242,8 +242,8 @@
 * Define the size of the display
 * Where is the centre of the vortex at this stage?
 * +- 1 degree
-'set lon 94 96'
-'set lat -36.2 -34.2'
+'set lon 93 97'
+'set lat -37.2 -33.2'
 'set gxout shaded'
 'd wspd'
 'set gxout contour'
