@@ -203,3 +203,6 @@
 
 * Save file
 'gxprint structure120hrAus1.png x450 y400'
+
+**** Note that by times 144, 168 and 192, the vortex
+* is too washed out to give meaningful results *******
