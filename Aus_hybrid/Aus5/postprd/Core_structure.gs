@@ -190,3 +190,139 @@
 
 * Save file
 'gxprint Zstructure120hrAus5.png x450 y400'
+
+****************** HR 144 ******************************************
+'reinit'
+
+* Set up plot
+'set display white'
+'set grads off'
+'draw string 1 0.5 33.6 degrees south'
+
+* Which file are we working with?
+'open wrfprs_d01.144.ctl'
+
+* Set lat to centr of storm (just grabbed from plot_tc.gs)
+'set lat -33.6'
+'latt = -33.6'
+
+* Set lon so it's +- 1000 km from storm centre
+'lon = 105.7'
+* How far is 1 km at this lat?
+'pi = 3.1415926'
+'latr = latt * pi/180'
+'x = 111.111*cos(latr)' 
+* now work out for 1000 km
+'x = 1/x*1000' 
+'lonmax = lon - x'
+'lonmin = lon + x'
+*'set lon lonmin lonmax'
+'set lon 94.6313 116.769'
+
+* Find the max and min hgtprs values
+'set lev 1000 100'
+'maxval = max(hgtprs,lon=94.6313,lon=116.769)'
+'minval = min(hgtprs,lon=94.6313,lon=116.769)'
+* Find diff
+'diffval = maxval - minval'
+'set lev 1000 100'
+'set zlog on'
+
+'d smth9(smth9(diffval))'
+'draw ylab Pressure (hPa)'
+'draw xlab Delta Z'
+'draw title Hour 144 Delta Z structure - Aus5'
+
+* Save file
+'gxprint Zstructure144hrAus5.png x450 y400'
+
+****************** HR 168 ******************************************
+'reinit'
+
+* Set up plot
+'set display white'
+'set grads off'
+'draw string 1 0.5 35 degrees south'
+
+* Which file are we working with?
+'open wrfprs_d01.168.ctl'
+
+* Set lat to centr of storm (just grabbed from plot_tc.gs)
+'set lat -35'
+'latt = -35'
+
+* Set lon so it's +- 1000 km from storm centre
+'lon = 99'
+* How far is 1 km at this lat?
+'pi = 3.1415926'
+'latr = latt * pi/180'
+'x = 111.111*cos(latr)' 
+* now work out for 1000 km
+'x = 1/x*1000' 
+'lonmax = lon - x'
+'lonmin = lon + x'
+*'set lon lonmin lonmax'
+'set lon 88.013 109.987'
+
+* Find the max and min hgtprs values
+'set lev 1000 100'
+'maxval = max(hgtprs,lon=88.013,lon=109.987)'
+'minval = min(hgtprs,lon=88.013,lon=109.987)'
+* Find diff
+'diffval = maxval - minval'
+'set lev 1000 100'
+'set zlog on'
+
+'d smth9(smth9(diffval))'
+'draw ylab Pressure (hPa)'
+'draw xlab Delta Z'
+'draw title Hour 168 Delta Z structure - Aus5'
+
+* Save file
+'gxprint Zstructure168hrAus5.png x450 y400'
+
+
+****************** HR 192 ******************************************
+'reinit'
+
+* Set up plot
+'set display white'
+'set grads off'
+'draw string 1 0.5 35.2 degrees south'
+
+* Which file are we working with?
+'open wrfprs_d01.192.ctl'
+
+* Set lat to centr of storm (just grabbed from plot_tc.gs)
+'set lat -35.2'
+'latt = -35.2'
+
+* Set lon so it's +- 1000 km from storm centre
+'lon = 95'
+* How far is 1 km at this lat?
+'pi = 3.1415926'
+'latr = latt * pi/180'
+'x = 111.111*cos(latr)' 
+* now work out for 1000 km
+'x = 1/x*1000' 
+'lonmax = lon - x'
+'lonmin = lon + x'
+*'set lon lonmin lonmax'
+'set lon 83.986 106.014'
+
+* Find the max and min hgtprs values
+'set lev 1000 100'
+'maxval = max(hgtprs,lon=83.986,lon=106.014)'
+'minval = min(hgtprs,lon=83.986,lon=106.014)'
+* Find diff
+'diffval = maxval - minval'
+'set lev 1000 100'
+'set zlog on'
+
+'d smth9(smth9(diffval))'
+'draw ylab Pressure (hPa)'
+'draw xlab Delta Z'
+'draw title Hour 192 Delta Z structure - Aus5'
+
+* Save file
+'gxprint Zstructure192hrAus5.png x450 y400'
