@@ -165,3 +165,7 @@
 
 * Save file
 'gxprint wind120hrAus1.png x600 y400'
+
+
+**** Note that by times 144, 168 and 192, the vortex
+* is too washed out to give meaningful results *******
