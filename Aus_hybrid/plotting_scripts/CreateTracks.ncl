@@ -1,3 +1,9 @@
+; Before running this script, you need to create a text file with the tracks data to
+; be read in
+
+; e.g.
+; grep ATCF rsl.out.0000 >> Aus1_tracks
+
 ;_______________________________________________________________________________________
 ;To run the script type:
 ;	ncl CreateTracks.ncl {options}
